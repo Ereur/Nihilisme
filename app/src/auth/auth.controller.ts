@@ -1,27 +1,16 @@
-import { Controller, Post, Get} from '@nestjs/common';
-import { AuthService } from './auth.service';
+import { Controller, Get, UseGuards ,Req} from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  @Get('42')
+  @UseGuards(AuthGuard('42'))
+  async auth() {}
 
-  @Get('hello')
-  allo(){
-    return ("OKfdsfsd")
+  @Get('42/callback')
+  @UseGuards(AuthGuard('42'))
+  async authCallback(@Req() req) {
+    return req.user;
   }
-
-  @Post('signup')
-  signup(){
-    return this.authService.signup()
-  }
-
-  @Post('signin')
-  signin(){
-    return 'signin route'
-  }
-
-  @Post('signout')
-  signout(){
-    return 'signout route'
-  }
+  
 }
